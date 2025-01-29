@@ -2,6 +2,7 @@
 from datetime import datetime
 import pandas as pd
 import json
+from pprint import pprint
 
 def load_data_into_data_frame():
     # load reform data
@@ -12,8 +13,8 @@ def load_data_into_data_frame():
     # Put data from json file into Pandas DataFrame
     ####################################################
 
-    # I'm organizing the data as one row for each parking minimum removal
-    # and parking maximum addition. So there can be mutiple rows per city.
+    # I'm organizing the data as one row for each parking reform 
+    # (removal of parking minimum, addition of parking maximum etc.)
 
     # create lists to hold intermediate data to be added into the dataframe
     coord_list = []
@@ -23,7 +24,7 @@ def load_data_into_data_frame():
     repeal_list = []
     state_list = []
     type_list = []
-    removed_minimum_or_added_maximum = []
+    reform_type_list = []
     date_list = []
     year_list = []
     land_list = []
@@ -48,7 +49,7 @@ def load_data_into_data_frame():
                 repeal_list.append(place["repeal"])
                 state_list.append(place["state"])
                 type_list.append(place["type"])
-                removed_minimum_or_added_maximum.append("Removed Parking Minimum")
+                reform_type_list.append("Removed Parking Minimum")
                 date_list.append(removed_minimum["date"])
                 try:
                     year_list.append(
@@ -75,7 +76,7 @@ def load_data_into_data_frame():
                 repeal_list.append(place["repeal"])
                 state_list.append(place["state"])
                 type_list.append(place["type"])
-                removed_minimum_or_added_maximum.append("Added Parking Maximum")
+                reform_type_list.append("Added Parking Maximum")
                 date_list.append(added_maximum["date"])
                 try:
                     year_list.append(
@@ -89,6 +90,33 @@ def load_data_into_data_frame():
         except:
             pass
 
+        # create row for each parking minimum reduced 
+        try:
+            reduce_min = entry["reduce_min"]
+
+            for reduced_min in reduce_min:
+
+                coord_list.append(place["coord"])
+                country_list.append(place["country"])
+                name_list.append(place["name"])
+                pop_list.append(place["pop"])
+                repeal_list.append(place["repeal"])
+                state_list.append(place["state"])
+                type_list.append(place["type"])
+                reform_type_list.append("Reduced Parking Minimum")
+                date_list.append(reduced_min["date"])
+                try:
+                    year_list.append(
+                        datetime.strptime(reduced_min["date"], "%Y-%m-%d").year
+                    )
+                except:
+                    year_list.append(None)
+                land_list.append(reduced_min["land"])
+                scope_list.append(reduced_min["scope"])
+                status_list.append(reduced_min["status"])
+        except:
+            pass
+
     # put lists into new dictionary to create DataFrame
     data_list_dict = {
         "Coordinates": coord_list,
@@ -98,7 +126,7 @@ def load_data_into_data_frame():
         "Repealed": repeal_list,
         "State": state_list,
         "Type": type_list,
-        "Removed Minimum or Added Maximum": removed_minimum_or_added_maximum,
+        "Reform Type": reform_type_list,
         "Date": date_list,
         "Year": year_list,
         "Land": land_list,
@@ -107,5 +135,6 @@ def load_data_into_data_frame():
     }
 
     df = pd.DataFrame(data_list_dict)
+    print(df['Year'].describe())
 
     return df
