@@ -1,0 +1,22 @@
+.content {
+    width: 100%;
+    position: relative;
+}
+/* need to use vh/wh otherwise graph starts tiny and grows. very strange behavior */
+.main-container {
+    display: grid;
+    grid-template-rows: 75px 1fr 50px;
+    grid-template-columns: 1fr;
+    height:99.5vh;
+    width:99.5vw;
+    background-color: rgb(221, 221, 221)
+}
+
+body {
+    margin: 0px;
+    height: 100%;
+}
+
+html {
+    height: 100%;
+}

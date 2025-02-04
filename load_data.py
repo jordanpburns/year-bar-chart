@@ -2,7 +2,6 @@
 from datetime import datetime
 import pandas as pd
 import json
-from pprint import pprint
 
 def load_data_into_data_frame():
     # load reform data
@@ -57,7 +56,7 @@ def load_data_into_data_frame():
                     )
                 except:
                     year_list.append(None)
-                land_list.append(removed_minimum["land"])
+                land_list.append(str(removed_minimum["land"]))
                 scope_list.append(removed_minimum["scope"])
                 status_list.append(removed_minimum["status"])
         except:
@@ -84,7 +83,7 @@ def load_data_into_data_frame():
                     )
                 except:
                     year_list.append(None)
-                land_list.append(added_maximum["land"])
+                land_list.append(str(added_maximum["land"]))
                 scope_list.append(added_maximum["scope"])
                 status_list.append(added_maximum["status"])
         except:
@@ -111,7 +110,7 @@ def load_data_into_data_frame():
                     )
                 except:
                     year_list.append(None)
-                land_list.append(reduced_min["land"])
+                land_list.append(str(reduced_min["land"]))
                 scope_list.append(reduced_min["scope"])
                 status_list.append(reduced_min["status"])
         except:
@@ -135,6 +134,5 @@ def load_data_into_data_frame():
     }
 
     df = pd.DataFrame(data_list_dict)
-    print(df['Year'].describe())
 
     return df

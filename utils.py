@@ -10,11 +10,11 @@ def set_attractive_y_dtick_size(masked_df_years):
     #in case the user selects a range without any data
     #TODO put in message that there is no data in selected range
     try:
-        highest_year_count = max(masked_df_years.value_counts())
+        highest_year_count = max(masked_df_years['Year'].value_counts())
     except:
         return 1
 
-    dticks = int(round(highest_year_count / 5))
+    dticks = int(round(highest_year_count / 6))
     if dticks == 0:
         return 1
     else:
@@ -32,3 +32,8 @@ def set_attractive_x_dtick_size(years):
         return 1
     else:
         return dticks
+    
+def format_number_KM(num):
+    if num >= 1000000:
+        return f'{round(num / 1000000)}M'
+    return f'{num // 1000}K'

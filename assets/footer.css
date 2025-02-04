@@ -1,0 +1,8 @@
+.footer {
+    grid-area: 3 / 1 / 4 / 2;
+}
+
+.prn-logo-wide {
+    height:50px;
+    background-color:white;
+}
