@@ -12,7 +12,7 @@ df = load_data_into_data_frame()
 # Create App
 ##############################################
 app = Dash()
-#TODO put each filter into it's own div to appear below title
+server = app.server
 
 app.layout = html.Div(
     className="main-container",
