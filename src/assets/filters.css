@@ -1,7 +1,7 @@
 #filter-container {
     font-size: 20px;
     padding:12px;
-    border:black 1px solid;
+    border:rgb(66,66,66) 1px solid;
     border-radius:5px;
     background-color:white;
     width:30%;
@@ -15,25 +15,24 @@
 font-size: 20px;
 }
 
-.hidden {
-    display: none;
-}
-
-.flex-column {
-    display: flex;
-    flex-direction:column;
-}
-
 .filter {
     display: flex;
     flex-direction:column;
     padding: 8px;
-    margin: 2px;
-    border: 1px solid gray;
+    margin: 8px;
+    border: 1px solid rgb(66,66,66);
     border-radius: 3px;
 }
 
 .filter-title {
     padding: 8px;
     font-size: 26px;
+}
+
+.dropdown {
+    padding: 8px;
+}
+
+.slider {
+    padding: 10px 0px;
 }

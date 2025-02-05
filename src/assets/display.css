@@ -1,0 +1,12 @@
+.hidden {
+    display: none;
+}
+
+.flex-column {
+    display: flex;
+    flex-direction:column;
+}
+
+.block {
+    display: block;
+}

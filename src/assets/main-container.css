@@ -7,16 +7,18 @@
     display: grid;
     grid-template-rows: 75px 1fr 50px;
     grid-template-columns: 1fr;
-    height:99.5vh;
-    width:99.5vw;
+    height:99vh;
+    width:100%;
     background-color: rgb(221, 221, 221)
 }
 
 body {
     margin: 0px;
     height: 100%;
+    width: 100%
 }
 
 html {
     height: 100%;
+    width: 100%
 }

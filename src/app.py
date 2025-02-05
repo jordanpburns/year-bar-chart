@@ -1,5 +1,4 @@
-from dash import Dash, html, dcc, callback, Output, Input, State
-from dash_extensions import DeferScript
+from dash import Dash, html, dcc, callback, Output, Input, State, ctx
 from datetime import datetime
 from load_data import load_data_into_data_frame
 import pandas as pd
@@ -32,6 +31,7 @@ app.layout = html.Div(
                         ),
                         html.Button(
                             className="header-icon-container",
+                            id="info-button",
                             children = [
                                 html.Img(src="assets/icons/circle-question-regular.svg")
                             ]
@@ -50,18 +50,6 @@ app.layout = html.Div(
                         html.Div(
                             className="filter",
                             children = [
-                                html.Div(className="filter-title", children="Country"),
-                                dcc.Dropdown(
-                                    id="country-dropdown",
-                                    options=df["Country"].unique(),
-                                    clearable=True,
-                                    multi=True,
-                                )
-                            ]
-                        ),
-                        html.Div(
-                            className="filter",
-                            children = [
                                 html.Div(className="filter-title", children="Years"),
                                 dcc.RangeSlider(
                                     min=df["Year"].min(),
@@ -69,6 +57,7 @@ app.layout = html.Div(
                                     step=1,
                                     value=[2000, datetime.now().year],
                                     id="year-range-slider",
+                                    className="slider",
                                     marks={
                                         i: "{}".format(i)
                                         for i in range(
@@ -77,16 +66,7 @@ app.layout = html.Div(
                                             10,
                                         )
                                     },
-                                    tooltip={"placement": "bottom", "always_visible": True},
-                                ),
-                            ]
-                        ),
-                        html.Div(
-                            className="filter",
-                            children = [
-                                html.Div(className="filter-title", children="Name"),
-                                dcc.Dropdown(
-                                    id="name-dropdown", options=df["Name"], clearable=True, multi=True
+                                    tooltip={"placement": "bottom"},
                                 ),
                             ]
                         ),
@@ -97,14 +77,41 @@ app.layout = html.Div(
                                 dcc.RangeSlider(
                                     min=math.floor(math.log10(df["Population"].min())),
                                     max=math.ceil(math.log10(df["Population"].max())),
-                                    value=[4, 5],
+                                    value=[2, 9],
                                     marks={
                                         i: "{}".format(str(format_number_KM(10**i)))
                                         for i in range(math.floor(math.log10(df["Population"].min())),
-                                            math.ceil(math.log10(df["Population"].max())))
+                                            math.ceil(math.log10(df["Population"].max()))+1)
                                     },
                                     id="population-range-slider",
+                                    className="slider",
                                     tooltip={'placement': 'bottom','transform': 'powerOfTen'},
+                                ),
+                            ]
+                        ),
+                        html.Div(
+                            className="filter",
+                            children = [
+                                html.Div(className="filter-title", children="Country"),
+                                dcc.Dropdown(
+                                    id="country-dropdown",
+                                    className="dropdown",
+                                    options=df["Country"].unique(),
+                                    clearable=True,
+                                    multi=True,
+                                )
+                            ]
+                        ),
+                        html.Div(
+                            className="filter",
+                            children = [
+                                html.Div(className="filter-title", children="Name"),
+                                dcc.Dropdown(
+                                    id="name-dropdown",
+                                    className="dropdown",
+                                    options=df["Name"], 
+                                    clearable=True, 
+                                    multi=True
                                 ),
                             ]
                         ),
@@ -114,6 +121,7 @@ app.layout = html.Div(
                                 html.Div(className="filter-title", children="Parking Reform Type"),
                                 dcc.Dropdown(
                                     id="parking-reform-type-dropdown",
+                                    className="dropdown",
                                     options=df["Reform Type"].unique(),
                                     clearable=True,
                                     multi=True,
@@ -126,12 +134,28 @@ app.layout = html.Div(
                                 html.Div(className="filter-title", children="Type"),
                                 dcc.Dropdown(
                                     id="type-dropdown",
+                                    className="dropdown",
                                     options=df["Type"].unique(),
                                     clearable=True,
                                     multi=True,
                                 ),
                             ]
                         ),
+                    ]
+                ),
+                html.Div(
+                    id="info-container",
+                    className='hidden',
+                    children=[
+                        html.Div(id="info-title",
+                                 children="About the Bar Chart"
+                                 ),
+                        html.Div(id="info-instructions-title",
+                                 children='Instructions'),
+                        html.Div(id="info-instructions",
+                                 children="""The bar chart shows the number of parking reforms 
+                                 enacted each year. Click the filter icon in the top-right to 
+                                 change which places are shown, such as to filter by population size.""")
                     ]
                 ),
                 dcc.Graph(
@@ -157,18 +181,27 @@ app.layout = html.Div(
 # Callbacks for header buttons
 ########################################################
 @callback(
-        Output("filter-container", "className"),
-        Input("filter-button", "n_clicks"),
+        [Output("filter-container", "className"),
+        Output("info-container", "className")
+        ],
+        [Input("filter-button", "n_clicks"),
+         Input("info-button", "n_clicks"),
         State("filter-container", "className"),
-        prevent_initial_call=True
+        State("info-container", "className")],
+        prevent_initial_call=True,
 )
-def toggleShowFilter(n_clicks, current_class_name):
-    if "hidden" in current_class_name:
-        return "flex-column"
-    else:
-        return "hidden"
-    
-
+def HeaderButtonClick(n_clicks_a, n_clicks_b, filter_state, info_state):
+    match ctx.triggered_id:
+        case "filter-button":
+            if "hidden" in filter_state:
+                return ("flex-column", "hidden")
+            else:
+                return ("hidden", "hidden")
+        case "info-button":
+            if "hidden" in info_state:
+                return ("hidden", "block")
+            else:
+                return ("hidden", "hidden")
 
 ########################################################
 # Callbacks to filter data that shows up in bar graph

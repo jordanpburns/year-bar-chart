@@ -49,13 +49,14 @@ def load_data_into_data_frame():
                 state_list.append(place["state"])
                 type_list.append(place["type"])
                 reform_type_list.append("Removed Parking Minimum")
-                date_list.append(removed_minimum["date"])
+                date_list.append(removed_minimum['date'])  
                 try:
                     year_list.append(
-                        datetime.strptime(removed_minimum["date"], "%y-%m-%d").year
+                        datetime.strptime(removed_minimum["date"], "%Y-%m-%d").year
                     )
                 except:
                     year_list.append(None)
+
                 land_list.append(str(removed_minimum["land"]))
                 scope_list.append(removed_minimum["scope"])
                 status_list.append(removed_minimum["status"])
@@ -76,13 +77,14 @@ def load_data_into_data_frame():
                 state_list.append(place["state"])
                 type_list.append(place["type"])
                 reform_type_list.append("Added Parking Maximum")
-                date_list.append(added_maximum["date"])
+                date_list.append(added_maximum['date'])
                 try:
                     year_list.append(
                         datetime.strptime(added_maximum["date"], "%Y-%m-%d").year
                     )
                 except:
                     year_list.append(None)
+
                 land_list.append(str(added_maximum["land"]))
                 scope_list.append(added_maximum["scope"])
                 status_list.append(added_maximum["status"])
@@ -110,6 +112,7 @@ def load_data_into_data_frame():
                     )
                 except:
                     year_list.append(None)
+
                 land_list.append(str(reduced_min["land"]))
                 scope_list.append(reduced_min["scope"])
                 status_list.append(reduced_min["status"])
@@ -134,5 +137,4 @@ def load_data_into_data_frame():
     }
 
     df = pd.DataFrame(data_list_dict)
-
     return df

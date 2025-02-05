@@ -1,0 +1,27 @@
+#info-container {
+    font-size: 32px;
+    padding:24px;
+    border:rgb(66,66,66) 1px solid;
+    border-radius:5px;
+    background-color:white;
+    width:30%;
+    position:absolute;
+    z-index:1;
+    right:16px;
+    top:16px;
+}
+
+#info-title {
+    font-size: 32px;
+    margin: 0px 0px 12px 0px;
+}
+
+#info-instructions-title {
+    font-size: 28px;
+    margin: 10px 0px;
+}
+
+#info-instructions {
+    font-size: 24px;
+    margin: 8px 0px;
+}
