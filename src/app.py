@@ -53,9 +53,9 @@ app.layout = html.Div(
                                 html.Div(className="filter-title", children="Years"),
                                 dcc.RangeSlider(
                                     min=df["Year"].min(),
-                                    max=df["Year"].max(),
+                                    max=datetime.now().year,
                                     step=1,
-                                    value=[2000, datetime.now().year],
+                                    value=[2000, datetime.now().year-1],
                                     id="year-range-slider",
                                     className="slider",
                                     marks={
@@ -175,6 +175,13 @@ app.layout = html.Div(
                 )
             ]
         ),
+        #to fix random space or right side of graph
+        dcc.Interval(
+            id="load_interval", 
+            n_intervals=0, 
+            max_intervals=0,
+            interval=1
+        ),
     ],
 )
 ########################################################
@@ -258,6 +265,19 @@ def update_graph(country, years, name, populations, reform_type, type):
         },
     )
     return fig
+
+########################################
+# DUMMY CALLBACKS TO FIX GRAPH 
+########################################
+
+# @callback(
+#     Output("year-range-slider", "value"),
+#     Input('load_interval', "n_intervals"),
+# )
+# def fix_graph(input):
+#     print("callback fired")
+#     return [2000, datetime.now().year]
+
 
 if __name__ == "__main__":
     app.run(debug=True)
