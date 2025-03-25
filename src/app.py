@@ -155,7 +155,8 @@ app.layout = html.Div(
                         html.Div(id="info-instructions",
                                  children="""The bar chart shows the number of parking reforms 
                                  enacted each year. Click the filter icon in the top-right to 
-                                 change which places are shown, such as to filter by population size.""")
+                                 change which cities' reforms are shown. For example, you can filter 
+                                 cities by population size.""")
                     ]
                 ),
                 dcc.Graph(
